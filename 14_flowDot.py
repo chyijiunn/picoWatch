@@ -44,7 +44,7 @@ while 1:
     spin(5,120,LCD.red)#秒
     spin(4,100,LCD.black)#分
     hourspin(50 ,LCD.cyan )#時
-    runDotRing(5,110,LCD.cyan)
+    #runDotRing(5,110,LCD.cyan)
     LCD.show()
 
 

@@ -33,7 +33,7 @@ def pico_pong_main():
     ballVY = 2.0    # ball velocity along y in pixels per frame
 
     paddleX = int(SCREEN_WIDTH/2) # paddle  position in pixels
-    paddleVX = 6                  # paddle velocity in pixels per frame
+    paddleVX = 3                  # paddle velocity in pixels per frame
     score = 0
 
     while True:

@@ -870,15 +870,15 @@ clear(0)  # Clear the screen
 xc = 120  # Coordinates of centre
 yc = 120
 
-circle(xc,yc,120,colour(254, 109, 115)) # out ring
+circle(xc,yc,120,colour(58, 96, 110)) # out ring
 r = 120  # Tick outer radius - longer radius to stick out by 2 pixels
 # Draw the scale ticks -  lines from centre
 for p in range(0,360,6):
     hxn, hyn = end_point(p, r)
     LCD.line(120,120,120+hxn,120+hyn,colour(255,255,255))
     
-# Clear centre leaving blue ring with white ticks
-circle(xc,yc,110,colour(0,0,0))
+# 內圈
+circle(xc,yc,110,colour(164, 119, 139))
 
 r = 120  # Tick outer radius - longer radius to stick out by 2 pixels
 # Draw the scale ticks -  lines from centre
@@ -887,14 +887,16 @@ for p in range(0,360,30):
     LCD.line(120,120,120+hxn,120+hyn,colour(215, 253, 240))#數字刻度
     
 # Clear centre leaving blue ring with white ticks
-circle(xc,yc,100,colour(0,0,0))
-mr = 100  # length of minite hand       
-hr = 70   # length of hour hand
-sr = 100  # length of second hand
-# Start time
-h = 11
-m = 40
-s = 59
+circle(xc,yc,100,colour(58, 96, 110))
+mr = 100  # 分針長度    
+hr = 70   # 時針長度
+sr = 100  # 秒針長度
+
+# 現在時刻
+now = list(time.localtime())
+h = now[3]
+m = now[4]
+s = now[5]
 
 # === Main loop ===
 while True:
@@ -918,47 +920,47 @@ while True:
     alpha = m * 360/60
     mxn, myn = end_point(alpha, sr)
     
-    # Clear centre circle
+    # 清空底色
     circle(xc,yc,102,colour(0,0,0))
     
     # Write Title and Scale values
     cntr_st("Trunking",100,1,254, 249, 239) # Message
 
-    prnt_st("7",70,186,2,34, 124, 157)
-    prnt_st("5",158,186,2,34, 124, 157)
-    prnt_st("8",42,160,2,34, 124, 157)
-    prnt_st("4",190,160,2,34, 124, 157)
-    prnt_st("9",29,115,2,34, 124, 157)
-    prnt_st("3",200,115,2,34, 124, 157)
-    prnt_st("10",40,70,2,34, 124, 157)
-    prnt_st("2",190,70,2,34, 124, 157)
-    prnt_st("11",70,35,2,34, 124, 157)
-    prnt_st("1",157,35,2,34, 124, 157)
-    prnt_st("12",110,25,2,34, 124, 157)
-    prnt_st("6",115,200,2,34, 124, 157)
+    prnt_st("7",70,186,2,96, 123, 125)
+    prnt_st("5",158,186,2,96, 123, 125)
+    prnt_st("8",42,160,2,96, 123, 125)
+    prnt_st("4",190,160,2,96, 123, 125)
+    prnt_st("9",29,115,2,96, 123, 125)
+    prnt_st("3",200,115,2,96, 123, 125)
+    prnt_st("10",40,70,2,96, 123, 125)
+    prnt_st("2",190,70,2,96, 123, 125)
+    prnt_st("11",70,35,2,96, 123, 125)
+    prnt_st("1",157,35,2,96, 123, 125)
+    prnt_st("12",110,25,2,96, 123, 125)
+    prnt_st("6",115,200,2,96, 123, 125)
     
-    # Draw Digital Time
+    # 數字時鐘
     hs = "0"+str(h)
     ms = "0"+str(m)
     ts = hs[-2:] +":"+ms[-2:]
-    cntr_st(ts,145,3,255, 203, 119)
+    cntr_st(ts,145,3,224, 224, 224)
     
-    # Draw HOUR
+    # 時針
     hxnsm = int(hxn/8)
     hynsm = int(hyn/8)
-    c = colour(34, 124, 157)
+    c = colour(130, 142, 130)
     tri_filled(120+hxn, 120+hyn, 120+hynsm, 120-hxnsm, 120-hynsm, 120+hxnsm,c)
     circle(xc,yc,9,colour(255, 203, 119))#指針中心環
 
-    # Draw MINUTE
+    # 分針
     mxnsm = int(mxn/15)
     mynsm = int(myn/15)    
-    c = colour(23, 195, 178)
+    c = colour(170, 174, 142)
     tri_filled(120+mxn, 120+myn, 120+mynsm, 120-mxnsm, 120-mynsm, 120+mxnsm,c)
-    circle(xc,yc,8,colour(23, 195, 178))#指針中心
+    circle(xc,yc,8,colour(130, 142, 130))#指針中心
 
-    # Draw second
-    c = colour(254, 109, 115)
+    # 秒針
+    c = colour(255, 200, 0)
     LCD.line(xc,yc,120+sxn,120+syn,c)    
     LCD.show() # Update screen
     time.sleep(1) # Short delay

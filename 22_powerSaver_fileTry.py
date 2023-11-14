@@ -1,10 +1,12 @@
 import time , RP, math , random
-from machine import Timer
+from machine import Timer,ADC,Pin
 qmi8658=RP.QMI8658()
 LCD = RP.LCD_1inch28()
-Brightness = 65535
+Brightness =65535
 LCD.set_bl_pwm(Brightness)
 cx , cy =120 ,120 #center of watch
+Vbat_Pin = 29
+Vbat= ADC(Pin(Vbat_Pin)) 
 
 def spin( tic , spinLen , color):
     now = list(time.localtime())
@@ -55,9 +57,38 @@ def waterclock():
     sec = now[5]
     LCD.fill_rect(0,236-(4*sec),240,240,0x180f)
     LCD.text(str(now[3])+':'+str(int(now[4])),100,120,LCD.white)
+
+def powerSaver(tim):
+    global Brightness
+    xyz=qmi8658.Read_XYZ()
+    x0 = round(xyz[3],-1)
+    z0 = round(xyz[4],-1)
+    
+    time.sleep(0.5)
+    
+    xyz=qmi8658.Read_XYZ()
+    x1 = round(xyz[3],-1)
+    z1 = round(xyz[4],-1)
+    
+    if x1 == x0 and z1 == z0:
+        Brightness = Brightness - 10000
+        if Brightness <= 0: Brightness = 0
+    else :
+        Brightness = Brightness + 30000
+        if Brightness > 65535: Brightness = 65535
+    
+    LCD.set_bl_pwm(Brightness)
+    
+def writePowerTest():
+    reading = Vbat.read_u16()*3.3/65535*2
+    LCD.text("{:.2f}".format(reading),100,215,LCD.white)
+    data = open('record','a')
+    now = list(time.localtime())
+    data.write(str(now[3])+':'+str(now[4])+':'+str(now[5])+'-'+str("{:.2f}".format(reading))+'\n')
+    data.close()
     
 tim = Timer(-1)
-tim.init(period=60000, mode=Timer.PERIODIC, callback= changeColor)
+tim.init(period=1000, mode=Timer.PERIODIC, callback= powerSaver)
 
 R = random.randint(-1,256)
 G = random.randint(-1,256)
@@ -65,30 +96,9 @@ B = random.randint(-1,256)
 
 while 1:
     LCD.fill_rect(0,00,240,240,0)
-    
-    xyz=qmi8658.Read_XYZ()
-    x0 = round(xyz[3])
-    z0 = round(xyz[4])
-    
-    #waterclock()
-    #centerCircle(5,120,color(R,G,256-B))#秒
-    #spin(5,120,color(R,256-G,256-B))#秒
     spin(4,100,color(256-R,256-G,256-B))#分
     hourspin(50 , color(256-R,256-G,B))#時
     runDotRing(5,110,color(256-R,G,256-B))
-    
-    time.sleep(0.9)
-    xyz=qmi8658.Read_XYZ()
-    x1 = round(xyz[3])
-    z1 = round(xyz[4])
-    if x1 == x0 and z1 == z0:
-        Brightness = Brightness - 10000
-        if Brightness <= 0: Brightness = 0
-    else :
-        Brightness = Brightness + 20000
-        if Brightness > 65535: Brightness = 65535
-    
-    LCD.set_bl_pwm(Brightness)
+    writePowerTest()
     LCD.show()
-    print(x0,x1,':', z0 ,z1)
-
+    time.sleep(1)

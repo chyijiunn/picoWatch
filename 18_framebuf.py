@@ -19,9 +19,9 @@ x_position = (240 - heart_width) // 2
 y_position = (240 - heart_height) // 2
 
 for y in range(heart_height):
-            start_index = y * heart_width
-            end_index = start_index + heart_width
-            self.buffer[(y_position + y) * self.width + x_position: (y_position + y) * self.width + x_position + heart_width] = converted_data[start_index:end_index]
+    start_index = y * heart_width
+    end_index = start_index + heart_width
+    self.buffer[(y_position + y) * self.width + x_position: (y_position + y) * self.width + x_position + heart_width] = converted_data[start_index:end_index]
 fb = framebuf.FrameBuffer(pic, 240, 240, framebuf.RGB565)
 LCD.blit(fb,60,60)
 LCD.show()

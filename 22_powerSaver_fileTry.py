@@ -81,11 +81,16 @@ def powerSaver(tim):
     
 def writePowerTest():
     reading = Vbat.read_u16()*3.3/65535*2
-    LCD.text("{:.2f}".format(reading),100,215,LCD.white)
-    data = open('record','a')
+    #print(reading)
+    bat_remain = (reading - 3.37 ) / (4.24-3.37) * 100 #(測得電壓-終止電壓)除以(起始電壓-終止電壓)
+    LCD.text("{:.0f}".format(bat_remain)+'%',100,215,LCD.white)
+    #終止電壓撰寫記錄
+    '''
+    data = open('record','w')
     now = list(time.localtime())
     data.write(str(now[3])+':'+str(now[4])+':'+str(now[5])+'-'+str("{:.2f}".format(reading))+'\n')
     data.close()
+    '''
     
 tim = Timer(-1)
 tim.init(period=1000, mode=Timer.PERIODIC, callback= powerSaver)
@@ -101,4 +106,4 @@ while 1:
     runDotRing(5,110,color(256-R,G,256-B))
     writePowerTest()
     LCD.show()
-    time.sleep(1)
+    time.sleep(0.5)

@@ -5,11 +5,15 @@
 #  My GFX and Text routines are included in full - enjoy
 # This method is easy to adapt to other 240x240 LCD screens
 
-from machine import Pin,I2C,SPI,PWM
-import framebuf
-import time
+from machine import Pin,I2C,SPI,PWM,Timer
+import framebuf ,RP
+import time 
 import math
-
+'''
+qmi8658=RP.QMI8658()
+Brightness =65535
+LCD.set_bl_pwm(Brightness)
+'''
 DC = 8
 CS = 9
 SCK = 10
@@ -858,6 +862,27 @@ def cntr_st(s,y,sz,r,g,b): # Centres text on line y
 # =========== End of font support routines ===========
     
 # ==== Board now setup ========== MAIN BELOW====================
+def powerSaver(tim):
+    global Brightness
+    xyz=qmi8658.Read_XYZ()
+    x0 = round(xyz[3],-1)
+    z0 = round(xyz[4],-1)
+    
+    time.sleep(0.5)
+    
+    xyz=qmi8658.Read_XYZ()
+    x1 = round(xyz[3],-1)
+    z1 = round(xyz[4],-1)
+    
+    if x1 == x0 and z1 == z0:
+        Brightness = Brightness - 10000
+        if Brightness <= 0: Brightness = 0
+    else :
+        Brightness = Brightness + 30000
+        if Brightness > 65535: Brightness = 65535
+    
+    LCD.set_bl_pwm(Brightness)
+    
 def end_point(theta, rr): # Calculate end of hand offsets
     theta_rad = math.radians(theta)                       
     theta_rad = math.radians(theta)    
@@ -899,6 +924,8 @@ m = now[4]
 s = now[5]
 
 # === Main loop ===
+tim = Timer(-1)
+tim.init(period=1000, mode=Timer.PERIODIC, callback= powerSaver)
 while True:
     s = s + 1              # Add a second
     if s == 60:            # Adjust secs, mins and hours as necessary

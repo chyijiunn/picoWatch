@@ -26,7 +26,7 @@ def centerCircle(tic , spinLen , color):
     for i in range(-r,r,1):
         for j in range(-r,r,1):
             if i*i + j*j <= r*r:
-                LCD.pixel(cx+i,cy+j,color)
+                LCD.pixel(cx+i,cy+j,color)#利用pixel畫的時候，半徑增大、計算時間N^2
                 
 def runDotRing(tic , spinLen , color):
     r = 10

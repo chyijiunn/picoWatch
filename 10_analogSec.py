@@ -20,7 +20,9 @@ while 1:
     y_cos = math.cos(radian)
     LCD.line(120,120,int(110*x_sin+110),int(-110*y_cos+110),LCD.black)
     
+    #分針和秒針是否有相同程式碼可以合併作業就好嗎？
     #時針的設計一樣嗎？
+
     LCD.show()
     time.sleep(1)
     

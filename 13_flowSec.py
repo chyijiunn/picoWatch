@@ -1,5 +1,5 @@
 import time , RP, math
-qmi8658=RP.QMI8658()
+qmi8658=RP.QMI8658()#讀取六軸資料
 LCD = RP.LCD_1inch28()
 LCD.set_bl_pwm(65535)
 cx , cy =120 ,120 #center of watch
@@ -53,7 +53,7 @@ def runDotFlow(tic , spinLen , color):
                 LCD.pixel(cx+z+i,cy-x+j,color)
                 
 while 1:
-    LCD.fill_rect(0,00,240,240,LCD.white)
+    LCD.fill_rect(0,00,240,240,LCD.white)#全螢幕刷新
     '''
     spin(5,120,LCD.red)
     spin(4,100,LCD.black)

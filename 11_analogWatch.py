@@ -16,7 +16,7 @@ def hourspin(spinLen , color):
     if now[3] < 12:hh = now[3]#切換24小時制 --> 12 小時制
     else : hh = now[3] - 12
     
-    x = spinLen*math.sin(math.radians(hh*30+(now[4]/2))) #hour spin 30˚/h , +0.5˚/min
+    x = spinLen*math.sin(math.radians(hh*30+(now[4]/2))) #時針刻度每小時走30˚、每分鐘(需讀now[4])走 0.5˚    
     y = spinLen*math.cos(math.radians(hh*30+(now[4]/2)))
     LCD.line(cx,cy,int(cx+x),int(cy-y),color)
 

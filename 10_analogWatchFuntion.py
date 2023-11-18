@@ -3,9 +3,9 @@ import time , RP, math
 LCD = RP.LCD_1inch28()
 LCD.set_bl_pwm(65535)
 
-def spin( tic , spinLen , color):
+def spin( tic , spinLen , color):#讀取tic = 3,4,5分別為時分秒
     now = list(time.localtime())
-    x = spinLen*math.sin(math.radians(now[tic]*6))
+    x = spinLen*math.sin(math.radians(now[tic]*6))#x = 要水平位移的點
     y = spinLen*math.cos(math.radians(now[tic]*6))
     LCD.line(120,120,int(spinLen+x),int(spinLen-y),color)
 

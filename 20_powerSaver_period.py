@@ -60,15 +60,15 @@ def powerSaver(tim):
     global Brightness
     xyz=qmi8658.Read_XYZ()
     x0 = round(xyz[3],-1)
-    z0 = round(xyz[4],-1)
+    y0 = round(xyz[4],-1)
     
     time.sleep(0.5)
     
     xyz=qmi8658.Read_XYZ()
     x1 = round(xyz[3],-1)
-    z1 = round(xyz[4],-1)
+    y1 = round(xyz[4],-1)
     
-    if x1 == x0 and z1 == z0:
+    if x1 == x0 and y1 == y0:
         Brightness = Brightness - 10000
         if Brightness <= 0: Brightness = 0
     else :

@@ -39,10 +39,10 @@ def runDotRing(tic , spinLen , color):
                 LCD.pixel(cx+x+i,cy-y+j,color)
 
 while 1:
-    LCD.fill_rect(0,00,240,240,LCD.white)
-    centerCircle(5,120,0x180f)
-    runDotRing(5,110,LCD.red)
-    spin(5,120,LCD.red)
+    LCD.fill_rect(0,0,240,240,LCD.white)
+    centerCircle(5,120,0x180f)#同心圓秒針
+    runDotRing(5,110,LCD.red)#紅點繞行秒針
+    spin(5,120,LCD.red)#一般秒針
     spin(4,100,LCD.black)
     hourspin(50 ,LCD.cyan )
 

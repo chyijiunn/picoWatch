@@ -9,6 +9,6 @@ LCD.show()
 N1 = utime.ticks_ms()
 utime.sleep(1)
 N2 = utime.ticks_ms()
-
+print(type(N1))
 LCD.text(str(N2-N1),100,120,LCD.black)
 LCD.show()

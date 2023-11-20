@@ -9,4 +9,5 @@ LCD.show()
 
 now = time.localtime()#讀取機器內時間
 LCD.text(str(now),0,120,LCD.black)#把剛剛時間寫入LCD
+print(now)
 LCD.show()

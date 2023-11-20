@@ -9,11 +9,10 @@ from machine import Pin,I2C,SPI,PWM,Timer
 import framebuf ,RP
 import time 
 import math
-'''
+
 qmi8658=RP.QMI8658()
 Brightness =65535
-LCD.set_bl_pwm(Brightness)
-'''
+
 DC = 8
 CS = 9
 SCK = 10
@@ -861,7 +860,7 @@ def cntr_st(s,y,sz,r,g,b): # Centres text on line y
 
 # =========== End of font support routines ===========
     
-# ==== Board now setup ========== MAIN BELOW====================
+# ==== MAIN BELOW=========
 def powerSaver(tim):
     global Brightness
     xyz=qmi8658.Read_XYZ()
@@ -890,7 +889,6 @@ def end_point(theta, rr): # Calculate end of hand offsets
     yy = -int(rr * math.cos(theta_rad))                     
     return xx,yy
 
-# https://youtu.be/X6PRcno_WbQ
 clear(0)  # Clear the screen
 xc = 120  # Coordinates of centre
 yc = 120

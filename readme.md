@@ -38,7 +38,7 @@
 8. 引入 random 來決定顏色，random.randint(0,256) 從0~255選一個顏色![14](/img/media/14.GIF)
 9. Timer 使用
 10. 60秒才換一次顏色![16](/img/media/16.GIF)
-11. 三軸讀取![17](/img/media/17.GIF)
+11. 三軸讀取![17](/img/media/17.jpg)
 12. 動了就爆炸 ![18](/img/media/18.GIF)
 13. 利用六軸來節省電力 def powerSaver：
 	- 如果沒有動，螢幕逐漸變暗

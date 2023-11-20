@@ -2,7 +2,7 @@ import time , RP, math , random
 from machine import Timer,ADC,Pin
 qmi8658=RP.QMI8658()
 LCD = RP.LCD_1inch28()
-Brightness =65535
+Brightness =15535
 LCD.set_bl_pwm(Brightness)
 cx , cy =120 ,120 #center of watch
 Vbat_Pin = 29

@@ -1,7 +1,7 @@
 import time , RP, math
 
 LCD = RP.LCD_1inch28()
-LCD.set_bl_pwm(65535)
+LCD.set_bl_pwm(15535)
 
 def spin( tic , spinLen , color):#讀取tic = 3,4,5分別為時分秒
     now = list(time.localtime())

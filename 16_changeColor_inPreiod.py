@@ -2,7 +2,7 @@ import time , RP, math , random
 from machine import Timer
 qmi8658=RP.QMI8658()
 LCD = RP.LCD_1inch28()
-LCD.set_bl_pwm(65535)
+LCD.set_bl_pwm(15535)
 cx , cy =120 ,120 
 
 def spin( tic , spinLen , color):

@@ -2,7 +2,7 @@ import time , RP, math , random
 from machine import Timer
 qmi8658=RP.QMI8658()#引入六軸
 LCD = RP.LCD_1inch28()
-Brightness =65535
+Brightness =15535
         
 while True:
     LCD.fill(LCD.black)#螢幕刷新

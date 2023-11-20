@@ -2,7 +2,7 @@ from machine import Pin,I2C,SPI,PWM,ADC
 import RP,framebuf
 
 LCD = RP.LCD_1inch28()
-LCD.set_bl_pwm(65535)
+LCD.set_bl_pwm(15535)
 
 heart_data = bytearray(b'\xF8\x00\xE3\xC0\xC1\xE0\x07\xF0\x0F\xF8\x1E\x7C\x3C\x3E\x78\x1F\xF0\x0F\xE0\x07\xC0\x03\x80\x01\x00')
 

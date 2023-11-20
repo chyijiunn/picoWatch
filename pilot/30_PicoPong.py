@@ -3,6 +3,7 @@ from RP import *
 import random
 
 LCD = LCD_1inch28()
+LCD.set_bl_pwm(30000)
 qmi8658=QMI8658()
 Vbat= ADC(Pin(Vbat_Pin))
 

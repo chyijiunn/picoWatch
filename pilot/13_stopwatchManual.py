@@ -17,7 +17,7 @@ LCD.fill(BG)
 ori_x = 120
 ori_y = 120
 
-def circle(cx,cy,rr,color=FC):
+def circle(cx,cy,rr=10,color=FC):
     for i in range(-rr,rr,1):
         for j in range(-rr,rr,1):
             if i*i + j*j <= rr*rr:
@@ -25,10 +25,11 @@ def circle(cx,cy,rr,color=FC):
 
 def dot():
     global ori_x , ori_y
+    LCD.fill(BG)
     xyz=qmi8658.Read_XYZ()
-    x_shift = int(xyz[3]/10)
-    y_shift = int(xyz[4])
-    circle(ori_x+x_shift,ori_y-y_shift,20)
+    x_shift = int(xyz[3]//10)
+    y_shift = int(xyz[4]//10)
+    circle(ori_x+x_shift,ori_y-y_shift)
     ori_x = ori_x - x_shift
     ori_y = ori_y - y_shift
 
@@ -42,8 +43,6 @@ def stopwatch():
         now = str(H)+':'+str(M%60)+':'+str(S%60)+'.'+str(cS%100)
         LCD.text(font,now,digitalxstart,digitalystart,FC,BG)
     
-#_thread.start_new_thread(stopwatch, ())
-
+_thread.start_new_thread(stopwatch, ())
 while True:
     dot()
-

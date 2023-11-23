@@ -1,12 +1,13 @@
 from RP import *
 LCD = LCD_1inch28()
+LCD.set_bl_pwm(15535)
 
 def color(R,G,B): # Convert RGB888 to RGB565
     return (((G&0b00011100)<<3) +((B&0b11111000)>>3)<<8) + (R&0b11111000)+((G&0b11100000)>>5)
 
 # https://coolors.co/generate
-print(color(37, 40, 61))
-LCD.fill(5581)
+print(color(37, 40, 201))
+LCD.fill(22817)
 LCD.show()
 
 LCD.fill_rect(20,20,80,80,0)

@@ -11,7 +11,7 @@ import time
 import math
 
 qmi8658=RP.QMI8658()
-Brightness =65535
+Brightness =15535
 
 DC = 8
 CS = 9

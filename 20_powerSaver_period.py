@@ -76,7 +76,6 @@ def powerSaver(tim):
         if Brightness > 65535: Brightness = 65535
     
     LCD.set_bl_pwm(Brightness)
-    print(x0)
     
     
 tim = Timer(-1)

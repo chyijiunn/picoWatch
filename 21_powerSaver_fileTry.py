@@ -2,7 +2,7 @@ import time , RP, math , random
 from machine import Timer,ADC,Pin
 qmi8658=RP.QMI8658()
 LCD = RP.LCD_1inch28()
-Brightness =15535
+Brightness =5535
 LCD.set_bl_pwm(Brightness)
 cx , cy =120 ,120 #center of watch
 Vbat_Pin = 29
@@ -91,9 +91,11 @@ def writePowerTest():
     data.write(str(now[3])+':'+str(now[4])+':'+str(now[5])+'-'+str("{:.2f}".format(reading))+'\n')
     data.close()
     '''
-    
+
+#省電模式
 tim = Timer(-1)
-tim.init(period=1000, mode=Timer.PERIODIC, callback= powerSaver)
+#tim.init(period=1000, mode=Timer.PERIODIC, callback= powerSaver)
+tim.init(period=15000, mode=Timer.PERIODIC, callback= changeColor)
 
 R = random.randint(-1,256)
 G = random.randint(-1,256)

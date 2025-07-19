@@ -2,7 +2,7 @@ import time , RP
 from machine import Timer
 qmi8658=RP.QMI8658()#引入六軸
 LCD = RP.LCD_1inch28()
-Brightness =15535
+Brightness = 5535
         
 while True:
     xyz=qmi8658.Read_XYZ()

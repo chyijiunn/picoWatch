@@ -330,6 +330,120 @@ class LCD_1inch28(framebuf.FrameBuffer):
         self.cs(0)
         self.spi.write(self.buffer)
         self.cs(1)
+    def Windows_show(self,Xstart,Ystart,Xend,Yend):
+        if Xstart > Xend:
+            data = Xstart
+            Xstart = Xend
+            Xend = data
+            
+        if (Ystart > Yend):        
+            data = Ystart
+            Ystart = Yend
+            Yend = data
+            
+        if Xstart <= 10:
+            Xstart = 10
+        if Ystart <= 10:
+            Ystart = 10
+            
+        Xstart -= 10;Xend += 10
+        Ystart -= 10;Yend += 10
+        
+        self.setWindows(Xstart,Ystart,Xend,Yend)      
+        self.cs(1)
+        self.dc(1)
+        self.cs(0)
+        for i in range (Ystart,Yend-1):             
+            Addr = (Xstart * 2) + (i * 240 * 2)                
+            self.spi.write(self.buffer[Addr : Addr+((Xend-Xstart)*2)])
+        self.cs(1)
+    
+    def color(self,R,G,B):
+        return (((G&0b00011100)<<3) +((B&0b11111000)>>3)<<8) + (R&0b11111000)+((G&0b11100000)>>5)
+    
+    #Write characters, size is the font size, the minimum is 1  
+    def write_text(self,text,x,y,size,color):
+        ''' Method to write Text on OLED/LCD Displays
+            with a variable font size
+
+            Args:
+                text: the string of chars to be displayed
+                x: x co-ordinate of starting position
+                y: y co-ordinate of starting position
+                size: font size of text
+                color: color of text to be displayed
+        '''
+        background = self.pixel(x,y)
+        info = []
+        # Creating reference charaters to read their values
+        self.text(text,x,y,color)
+        for i in range(x,x+(8*len(text))):
+            for j in range(y,y+8):
+                # Fetching amd saving details of pixels, such as
+                # x co-ordinate, y co-ordinate, and color of the pixel
+                px_color = self.pixel(i,j)
+                info.append((i,j,px_color)) if px_color == color else None
+        # Clearing the reference characters from the screen
+        self.text(text,x,y,background)
+        # Writing the custom-sized font characters on screen
+        for px_info in info:
+            self.fill_rect(size*px_info[0] - (size-1)*x , size*px_info[1] - (size-1)*y, size, size, px_info[2])
+    
+    def sleep_mode(self, value):
+        """
+        Enable or disable display sleep mode.
+        Args:
+            value (bool): if True enable sleep mode.
+                if False disable sleep mode
+        """
+        if value:
+            self.write_cmd(0x10)
+        else:
+            self.write_cmd(0x11)
+    
+    def fill_tri(self,x0, y0, x1, y1, x2, y2, color):
+        def sort_vertices(v0, v1, v2):
+            # Sort vertices by y-coordinate ascending (v0 <= v1 <= v2)
+            if v0[1] > v1[1]:
+                v0, v1 = v1, v0
+            if v1[1] > v2[1]:
+                v1, v2 = v2, v1
+            if v0[1] > v1[1]:
+                v0, v1 = v1, v0
+            return v0, v1, v2
+
+        def fill_bottom_flat_triangle(v0, v1, v2, color):
+            invslope1 = (v1[0] - v0[0]) / (v1[1] - v0[1])
+            invslope2 = (v2[0] - v0[0]) / (v2[1] - v0[1])
+            curx1 = v0[0]
+            curx2 = v0[0]
+            for y in range(v0[1], v1[1] + 1):
+                self.line(int(curx1), y, int(curx2), y, color)
+                curx1 += invslope1
+                curx2 += invslope2
+
+        def fill_top_flat_triangle(v0, v1, v2, color):
+            invslope1 = (v2[0] - v0[0]) / (v2[1] - v0[1])
+            invslope2 = (v2[0] - v1[0]) / (v2[1] - v1[1])
+            curx1 = v2[0]
+            curx2 = v2[0]
+            for y in range(v2[1], v0[1] - 1, -1):
+                self.line(int(curx1), y, int(curx2), y, color)
+                curx1 -= invslope1
+                curx2 -= invslope2
+
+        # Sort vertices
+        v0, v1, v2 = sort_vertices((x0, y0), (x1, y1), (x2, y2))
+
+        # Fill the triangle
+        if v1[1] == v2[1]:
+            fill_bottom_flat_triangle(v0, v1, v2, color)
+        elif v0[1] == v1[1]:
+            fill_top_flat_triangle(v0, v1, v2, color)
+        else:
+            v3 = (int(v0[0] + ((v1[1] - v0[1]) / (v2[1] - v0[1])) * (v2[0] - v0[0])), v1[1])
+            fill_bottom_flat_triangle(v0, v1, v3, color)
+            fill_top_flat_triangle(v1, v3, v2, color)
 
 
 class QMI8658(object):
@@ -404,6 +518,7 @@ class QMI8658(object):
             xyz[i]=raw_xyz[i]/acc_lsb_div#(acc_lsb_div/1000.0)
             xyz[i+3]=raw_xyz[i+3]*1.0/gyro_lsb_div
         return xyz
+    
 
 if __name__=='__main__':
   
